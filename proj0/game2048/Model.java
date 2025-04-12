@@ -109,11 +109,40 @@ public class Model extends Observable {
     public boolean tilt(Side side) {
         boolean changed;
         changed = false;
-
-        // TODO: Modify this.board (and perhaps this.score) to account
+        Board b = this.board;
+        // Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
-
+        if (atLeastOneMoveExists(b)) {
+            b.setViewingPerspective(side);
+            for (int i = 0; i < b.size(); i++) {
+                int x = b.size()-1;
+                int y = b.size()-2;
+                while(y >= 0 && x >= 0) {
+                    if (b.tile(i, y) == null) {
+                        y--;
+                    } else if (b.tile(i, x) != null && (b.tile(i, x).value() != b.tile(i, y).value())) {
+                        x--;
+                    } else if (b.tile(i, x) != null) {
+                        if (x == y) {
+                            y--;
+                        } else {
+                            score = score + b.tile(i, y).value() + b.tile(i, x).value();
+                            changed = true;
+                            b.move(i, x, b.tile(i, y));
+                            x--;
+                        }
+                    } else {
+                        b.move(i, x, b.tile(i, y));
+                        changed = true;
+                    }
+                }
+            }
+            b.setViewingPerspective(Side.NORTH);
+        }
+//        if (side != Side.NORTH) {
+//            changed = true;
+//        }
         checkGameOver();
         if (changed) {
             setChanged();
@@ -171,7 +200,7 @@ public class Model extends Observable {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // 1. 判断board是否存在空的tile
-        if (Model.emptySpaceExists(b)) {
+        if (emptySpaceExists(b)) {
             return true;
         }
         // 2. 判断是否存在两个相邻的方块具有相同的值
