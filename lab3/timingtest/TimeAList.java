@@ -22,6 +22,44 @@ public class TimeAList {
     }
 
     public static void timeAListConstruction() {
-        // TODO: YOUR CODE HERE
+        // 创建三个用于存储计时信息的AList和被计时的AList
+        AList<Integer> Ns = new AList<>();
+        AList<Double> times = new AList<>();
+        AList<Integer> opCounts = new AList<>();
+
+        // 开始计时测试（坏的addLast）
+//        for (int i = 1000; i <= 128000; i *= 2) {
+//            int n;
+//            AList<Integer> test = new AList<>();
+//            // 创建计时器并开始计时
+//            Stopwatch sw = new Stopwatch();
+//            for (n = 0; n < i; n++) {
+//                test.addLastBad(n);
+//            }
+//            // 停止计时并把信息存入计时信息AList
+//            double timeInSeconds = sw.elapsedTime();
+//            Ns.addLast(n);
+//            times.addLast(timeInSeconds);
+//            opCounts.addLast(n);
+//        }
+
+        // 开始计时测试（好的addLast）
+        for (int i = 1000; i <= 128000; i *= 2) {
+            int n;
+            AList<Integer> test = new AList<>();
+            // 创建计时器并开始计时
+            Stopwatch sw = new Stopwatch();
+            for (n = 0; n < i; n++) {
+                test.addLast(n);
+            }
+            // 停止计时并把信息存入计时信息AList
+            double timeInSeconds = sw.elapsedTime();
+            Ns.addLast(n);
+            times.addLast(timeInSeconds);
+            opCounts.addLast(n);
+        }
+
+        // 打印信息
+        printTimingTable(Ns, times, opCounts);
     }
 }

@@ -22,7 +22,33 @@ public class TimeSLList {
     }
 
     public static void timeGetLast() {
-        // TODO: YOUR CODE HERE
+        // 创建三个用于存储计时信息的AList和被计时的SLList
+        AList<Integer> Ns = new AList<>();
+        AList<Double> times = new AList<>();
+        AList<Integer> opCounts = new AList<>();
+
+        for (int n = 1000; n <= 128000; n *= 2) {
+            // 初始化SLList
+            SLList<Integer> test = new SLList<>();
+            for (int i = 0; i < n; i++) {
+                test.addLast(i);
+            }
+
+            // 创建计时器并开始计时
+            Stopwatch sw = new Stopwatch();
+            for (int i = 0; i < 10000; i++) {
+                test.getLast();
+            }
+
+            // 停止计时并把信息存入计时信息AList
+            double timeInSeconds = sw.elapsedTime();
+            Ns.addLast(n);
+            times.addLast(timeInSeconds);
+            opCounts.addLast(10000);
+        }
+
+        // 打印信息
+        printTimingTable(Ns, times, opCounts);
     }
 
 }
