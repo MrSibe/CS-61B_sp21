@@ -111,6 +111,6 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public T get(int index) {
-        return items[index];
+        return items[index(index+nextFirst+1)];
     }
 }
