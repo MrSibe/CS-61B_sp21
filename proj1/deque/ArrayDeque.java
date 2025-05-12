@@ -101,11 +101,8 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public void printDeque() {
-        for (int i = nextFirst-1; i >= 0; i--) {
-            System.out.println(items[i]);
-        }
-        for (int i = nextLast+1; i < size; i++) {
-            System.out.println(items[i]);
+        for (int i = 0; i < size; i++) {
+            System.out.print(get(i) + " ");
         }
     }
 
