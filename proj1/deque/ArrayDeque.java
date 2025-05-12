@@ -16,58 +16,77 @@ public class ArrayDeque<T> implements Deque<T> {
     public ArrayDeque() {
         items = (T[]) new Object[8];
         size = 0;
-        nextFirst = 4;
-        nextLast = 5;
+        nextFirst = 3;
+        nextLast = 4;
     }
 
-    public boolean isFull() {
-        return this.size == items.length;
+    public int index(int i) {
+        if (i > items.length-1) {
+            return i % items.length;
+        }
+        else if (0 <= i) {
+            return i;
+        } else if (-items.length+1 <= i) {
+            return i + items.length;
+        } else {
+            return index(i % items.length);
+        }
     }
 
     public void resize(int capacity) {
-        T[] a = (T[]) new Object[capacity];
-        System.arraycopy(items, 0, a, 0, size);
-        items = a;
+        T[] alter = (T[]) new Object[capacity];
+        for (int i = nextFirst+1, j = 0; i <= nextFirst+size; i++, j++) {
+            alter[j] = items[index(i)];
+        }
+        items = alter;
+        nextFirst = index(-1);
+        nextLast = index(size);
     }
 
     @Override
     public void addFirst(T item) {
-        // 判断是否为满，满则resize
-//        if (isFull()) {
-//            resize(16);
-//        }
-        // 赋值
+        if (size == items.length) {
+            resize(size * 2);
+        }
         items[nextFirst] = item;
-        // nextFirst指针移动
-        nextFirst = nextFirst == 0 ? items.length-1 : nextFirst-1;
+        nextFirst = index(nextFirst-1);
         size++;
     }
 
     @Override
     public void addLast(T item) {
-        // 判断是否为满，满则resize
-//        if (isFull()) {
-//            resize(16);
-//        }
-        // 赋值
+        if (size == items.length) {
+            resize(size * 2);
+        }
         items[nextLast] = item;
-        // nextLast指针移动
-        nextLast = nextLast == items.length-1 ? 0 : nextLast+1;
+        nextLast = index(nextLast+1);
         size++;
     }
 
     @Override
     public T removeFirst() {
+        if (isEmpty()) {
+            return null;
+        }
+        if (size < items.length / 4 && size > 8) {
+            resize(items.length / 4);
+        }
+        nextFirst = index(nextFirst+1);
         size--;
-        nextFirst++;
-        return items[nextFirst-1];
+        return items[nextFirst];
     }
 
     @Override
     public T removeLast() {
+        if (isEmpty()) {
+            return null;
+        }
+        if (size < items.length / 4 && size > 8) {
+            resize(items.length / 4);
+        }
+        nextLast = index(nextLast-1);
         size--;
-        nextLast--;
-        return items[nextLast+1];
+        return items[nextLast];
     }
 
     @Override
@@ -82,8 +101,11 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public void printDeque() {
-        for(int i = nextFirst+1; i <= nextLast-1; i++) {
-            System.out.print(items[i] + " ");
+        for (int i = nextFirst-1; i >= 0; i--) {
+            System.out.println(items[i]);
+        }
+        for (int i = nextLast+1; i < size; i++) {
+            System.out.println(items[i]);
         }
     }
 
