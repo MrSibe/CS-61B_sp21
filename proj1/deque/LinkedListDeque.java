@@ -1,7 +1,6 @@
 package deque;
 
 import java.util.Iterator;
-import java.util.Objects;
 
 public class LinkedListDeque<T> implements Deque<T> {
     private final Node FirstSentinel;
@@ -78,11 +77,6 @@ public class LinkedListDeque<T> implements Deque<T> {
         LastSentinel.prev = LastSentinel.prev.prev;
         size--;
         return value;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return size == 0;
     }
 
     @Override

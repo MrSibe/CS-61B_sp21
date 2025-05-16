@@ -1,7 +1,6 @@
 package deque;
 
 import java.util.Iterator;
-import java.util.Objects;
 
 /** ArrayDeque
  * 采用循环双端数组实现
@@ -107,11 +106,6 @@ public class ArrayDeque<T> implements Deque<T> {
         nextLast = index(nextLast-1);
         size--;
         return items[nextLast];
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return size == 0;
     }
 
     @Override
