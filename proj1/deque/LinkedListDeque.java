@@ -120,11 +120,20 @@ public class LinkedListDeque<T> implements Deque<T> {
         return new LinkedListDequeIterator();
     }
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (o instanceof LinkedListDeque) {
-//            LinkedListDeque<T> p = LinkedListDeque o;
-//        }
-//
-//    }
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof LinkedListDeque) {
+            Node p = this.FirstSentinel.next, q = (Node) ((LinkedListDeque<?>) o).FirstSentinel.next;
+            while(p != null && q != null) {
+                if (p.item != q.item) {
+                    return false;
+                }
+                p = p.next;
+                q = q.next;
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

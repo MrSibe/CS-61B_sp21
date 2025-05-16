@@ -135,4 +135,24 @@ public class ArrayDeque<T> implements Deque<T> {
     public Iterator<T> iterator() {
         return new ArrayDequeIterator();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof ArrayDeque) {
+            if (this.size != ((ArrayDeque<?>) o).size) {
+                return false;
+            }
+            int p = this.index(nextFirst + 1), q = ((ArrayDeque<?>) o).index(nextFirst + 1);
+            while (q != this.index(nextLast) && q != ((ArrayDeque<?>) o).index(nextLast)) {
+                if (this.items[p] != ((ArrayDeque<?>) o).items[q]) {
+                    return false;
+                }
+                p = index(p+1);
+                q = ((ArrayDeque<?>) o).index(q+1);
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
