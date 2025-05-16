@@ -2,7 +2,7 @@ package deque;
 
 import java.util.Iterator;
 
-public interface Deque<T> {
+public interface Deque<T> extends Iterable<T> {
     /** 将类型为 T 的元素添加到双端队列的前端 */
     public void addFirst(T item);
 
@@ -26,4 +26,10 @@ public interface Deque<T> {
 
     /** 获取给定索引位置的元素 */
     public T get(int index);
+
+    /** 迭代器 */
+    public Iterator<T> iterator();
+
+    /** equal */
+    public boolean equals(Object o);
 }

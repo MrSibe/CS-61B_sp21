@@ -20,6 +20,26 @@ public class ArrayDeque<T> implements Deque<T> {
         nextLast = 4;
     }
 
+    public class ArrayDequeIterator implements Iterator<T> {
+        int currentIndex;
+
+        public ArrayDequeIterator() {
+            currentIndex = index(nextFirst+1);
+        }
+
+        @Override
+        public boolean hasNext() {
+            return currentIndex != nextLast;
+        }
+
+        @Override
+        public T next() {
+            T returnItem = items[currentIndex];
+            currentIndex = index(currentIndex+1);
+            return returnItem;
+        }
+    }
+
     public int index(int i) {
         if (i > items.length-1) {
             return i % items.length;
@@ -109,5 +129,10 @@ public class ArrayDeque<T> implements Deque<T> {
     @Override
     public T get(int index) {
         return items[index(index+nextFirst+1)];
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new ArrayDequeIterator();
     }
 }

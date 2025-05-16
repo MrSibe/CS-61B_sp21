@@ -1,10 +1,11 @@
 package deque;
 
 import java.util.Iterator;
+import java.util.Objects;
 
 public class LinkedListDeque<T> implements Deque<T> {
-    private Node FirstSentinel;
-    private Node LastSentinel;
+    private final Node FirstSentinel;
+    private final Node LastSentinel;
     private int size;
 
     public class Node {
@@ -24,6 +25,26 @@ public class LinkedListDeque<T> implements Deque<T> {
         this.FirstSentinel = new Node(null, null, null);
         this.LastSentinel = new Node(FirstSentinel, null, null);
         this.FirstSentinel.next = this.LastSentinel;
+    }
+
+    public class LinkedListDequeIterator implements Iterator<T> {
+        private Node p;
+
+        public LinkedListDequeIterator() {
+            p = FirstSentinel.next;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return p != LastSentinel;
+        }
+
+        @Override
+        public T next() {
+            T returnItem = p.item;
+            p = p.next;
+            return returnItem;
+        }
     }
 
     @Override
@@ -89,14 +110,21 @@ public class LinkedListDeque<T> implements Deque<T> {
         return p.item;
     }
 
+
     public T getRecursive(int index) {
         return get(index);
     }
 
-    /**
-     * 返回参数 o 是否等于该双端队列
-     */
-    public boolean equals(Object o) {
-        return false;
+    @Override
+    public Iterator<T> iterator() {
+        return new LinkedListDequeIterator();
     }
+
+//    @Override
+//    public boolean equals(Object o) {
+//        if (o instanceof LinkedListDeque) {
+//            LinkedListDeque<T> p = LinkedListDeque o;
+//        }
+//
+//    }
 }
