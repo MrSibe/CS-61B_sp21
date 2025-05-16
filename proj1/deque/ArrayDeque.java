@@ -23,7 +23,7 @@ public class ArrayDeque<T> implements Deque<T> {
         int currentIndex;
 
         public ArrayDequeIterator() {
-            currentIndex = index(nextFirst+1);
+            currentIndex = index(nextFirst + 1);
         }
 
         @Override
@@ -34,18 +34,17 @@ public class ArrayDeque<T> implements Deque<T> {
         @Override
         public T next() {
             T returnItem = items[currentIndex];
-            currentIndex = index(currentIndex+1);
+            currentIndex = index(currentIndex + 1);
             return returnItem;
         }
     }
 
     public int index(int i) {
-        if (i > items.length-1) {
+        if (i > items.length - 1) {
             return i % items.length;
-        }
-        else if (0 <= i) {
+        } else if (0 <= i) {
             return i;
-        } else if (-items.length+1 <= i) {
+        } else if (-items.length + 1 <= i) {
             return i + items.length;
         } else {
             return index(i % items.length);
@@ -54,7 +53,7 @@ public class ArrayDeque<T> implements Deque<T> {
 
     public void resize(int capacity) {
         T[] alter = (T[]) new Object[capacity];
-        for (int i = nextFirst+1, j = 0; i <= nextFirst+size; i++, j++) {
+        for (int i = nextFirst + 1, j = 0; i <= nextFirst + size; i++, j++) {
             alter[j] = items[index(i)];
         }
         items = alter;
@@ -68,7 +67,7 @@ public class ArrayDeque<T> implements Deque<T> {
             resize(size * 2);
         }
         items[nextFirst] = item;
-        nextFirst = index(nextFirst-1);
+        nextFirst = index(nextFirst - 1);
         size++;
     }
 
@@ -78,7 +77,7 @@ public class ArrayDeque<T> implements Deque<T> {
             resize(size * 2);
         }
         items[nextLast] = item;
-        nextLast = index(nextLast+1);
+        nextLast = index(nextLast + 1);
         size++;
     }
 
@@ -90,7 +89,7 @@ public class ArrayDeque<T> implements Deque<T> {
         if (size < items.length / 4 && size > 8) {
             resize(items.length / 4);
         }
-        nextFirst = index(nextFirst+1);
+        nextFirst = index(nextFirst + 1);
         size--;
         return items[nextFirst];
     }
@@ -103,7 +102,7 @@ public class ArrayDeque<T> implements Deque<T> {
         if (size < items.length / 4 && size > 8) {
             resize(items.length / 4);
         }
-        nextLast = index(nextLast-1);
+        nextLast = index(nextLast - 1);
         size--;
         return items[nextLast];
     }
@@ -122,7 +121,7 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public T get(int index) {
-        return items[index(index+nextFirst+1)];
+        return items[index(index + nextFirst + 1)];
     }
 
     public Iterator<T> iterator() {
@@ -140,8 +139,8 @@ public class ArrayDeque<T> implements Deque<T> {
                 if (this.items[p] != ((ArrayDeque<?>) o).items[q]) {
                     return false;
                 }
-                p = index(p+1);
-                q = ((ArrayDeque<?>) o).index(q+1);
+                p = index(p + 1);
+                q = ((ArrayDeque<?>) o).index(q + 1);
             }
             return true;
         } else {

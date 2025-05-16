@@ -3,14 +3,14 @@ package deque;
 import java.util.Iterator;
 
 public class LinkedListDeque<T> implements Deque<T> {
-    private final Node FirstSentinel;
-    private final Node LastSentinel;
+    private final Node firstSentinel;
+    private final Node lastSentinel;
     private int size;
 
     public class Node {
-        public Node prev;
-        public Node next;
-        public T item;
+        private Node prev;
+        private Node next;
+        private T item;
 
         public Node(Node p, Node n, T i) {
             this.prev = p;
@@ -21,21 +21,21 @@ public class LinkedListDeque<T> implements Deque<T> {
 
     public LinkedListDeque() {
         this.size = 0;
-        this.FirstSentinel = new Node(null, null, null);
-        this.LastSentinel = new Node(FirstSentinel, null, null);
-        this.FirstSentinel.next = this.LastSentinel;
+        this.firstSentinel = new Node(null, null, null);
+        this.lastSentinel = new Node(firstSentinel, null, null);
+        this.firstSentinel.next = this.lastSentinel;
     }
 
     public class LinkedListDequeIterator implements Iterator<T> {
         private Node p;
 
         public LinkedListDequeIterator() {
-            p = FirstSentinel.next;
+            p = firstSentinel.next;
         }
 
         @Override
         public boolean hasNext() {
-            return p != LastSentinel;
+            return p != lastSentinel;
         }
 
         @Override
@@ -48,33 +48,37 @@ public class LinkedListDeque<T> implements Deque<T> {
 
     @Override
     public void addFirst(T item) {
-        FirstSentinel.next.prev = new Node(FirstSentinel, FirstSentinel.next, item);
-        FirstSentinel.next = FirstSentinel.next.prev;
+        firstSentinel.next.prev = new Node(firstSentinel, firstSentinel.next, item);
+        firstSentinel.next = firstSentinel.next.prev;
         size++;
     }
 
     @Override
     public void addLast(T item) {
-        LastSentinel.prev.next = new Node(LastSentinel.prev, LastSentinel, item);
-        LastSentinel.prev = LastSentinel.prev.next;
+        lastSentinel.prev.next = new Node(lastSentinel.prev, lastSentinel, item);
+        lastSentinel.prev = lastSentinel.prev.next;
         size++;
     }
 
     @Override
     public T removeFirst() {
-        if (size == 0) return null;
-        T value = FirstSentinel.next.item;
-        FirstSentinel.next.next.prev = FirstSentinel;
-        FirstSentinel.next = FirstSentinel.next.next;
+        if (size == 0) {
+            return null;
+        }
+        T value = firstSentinel.next.item;
+        firstSentinel.next.next.prev = firstSentinel;
+        firstSentinel.next = firstSentinel.next.next;
         size--;
         return value;
     }
 
     @Override
     public T removeLast() {
-        if (size == 0) return null;
-        T value = LastSentinel.prev.item;
-        LastSentinel.prev = LastSentinel.prev.prev;
+        if (size == 0) {
+            return null;
+        }
+        T value = lastSentinel.prev.item;
+        lastSentinel.prev = lastSentinel.prev.prev;
         size--;
         return value;
     }
@@ -86,9 +90,11 @@ public class LinkedListDeque<T> implements Deque<T> {
 
     @Override
     public void printDeque() {
-        if (size == 0) return;
-        Node p = FirstSentinel.next;
-        while(p.next != null) {
+        if (size == 0) {
+            return;
+        }
+        Node p = firstSentinel.next;
+        while (p.next != null) {
             System.out.print(p.item + " ");
             p = p.next;
         }
@@ -96,8 +102,10 @@ public class LinkedListDeque<T> implements Deque<T> {
 
     @Override
     public T get(int index) {
-        if (size == 0 || index >= size) return null;
-        Node p = FirstSentinel.next;
+        if (size == 0 || index >= size) {
+            return null;
+        }
+        Node p = firstSentinel.next;
         for (int i = 0; i < index; i++) {
             p = p.next;
         }
@@ -116,8 +124,9 @@ public class LinkedListDeque<T> implements Deque<T> {
     @Override
     public boolean equals(Object o) {
         if (o instanceof LinkedListDeque) {
-            Node p = this.FirstSentinel.next, q = (Node) ((LinkedListDeque<?>) o).FirstSentinel.next;
-            while(p != null && q != null) {
+            Node p = this.firstSentinel.next;
+            Node q = (Node) ((LinkedListDeque<?>) o).firstSentinel.next;
+            while (p != null && q != null) {
                 if (p.item != q.item) {
                     return false;
                 }

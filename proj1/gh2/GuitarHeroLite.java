@@ -16,7 +16,7 @@ public class GuitarHeroLite {
 
         // 创建每一根吉他弦
         for (int i = 0; i < keyboard.length(); i++) {
-            double frequency = CONCERT_A * Math.pow(2, (i-24) / 12.0);
+            double frequency = CONCERT_A * Math.pow(2, (i - 24) / 12.0);
             guitarStrings.addLast(new GuitarString(frequency));
         }
         while (true) {
