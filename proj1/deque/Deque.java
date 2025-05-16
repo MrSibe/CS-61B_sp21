@@ -4,32 +4,34 @@ import java.util.Iterator;
 
 public interface Deque<T> extends Iterable<T> {
     /** 将类型为 T 的元素添加到双端队列的前端 */
-    public void addFirst(T item);
+    void addFirst(T item);
 
     /** 将类型为 T 的元素添加到双端队列的后端 */
-    public void addLast(T item);
+    void addLast(T item);
 
     /** 移除并返回双端队列前端的元素 */
-    public T removeFirst();
+    T removeFirst();
 
     /** 移除并返回双端队列末尾的元素 */
-    public T removeLast();
+    T removeLast();
 
     /** 判断是否为空 */
-    public boolean isEmpty();
+    default boolean isEmpty() {
+        return size() == 0;
+    }
 
     /** 获取大小 */
-    public int size();
+    int size();
 
     /** 打印队列元素 */
-    public void printDeque();
+    void printDeque();
 
     /** 获取给定索引位置的元素 */
-    public T get(int index);
+    T get(int index);
 
     /** 迭代器 */
-    public Iterator<T> iterator();
+    Iterator<T> iterator();
 
     /** equal */
-    public boolean equals(Object o);
+    boolean equals(Object o);
 }
