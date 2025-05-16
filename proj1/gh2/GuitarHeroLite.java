@@ -1,4 +1,5 @@
 package gh2;
+import deque.ArrayDeque;
 import edu.princeton.cs.algs4.StdAudio;
 import edu.princeton.cs.algs4.StdDraw;
 
@@ -7,34 +8,40 @@ import edu.princeton.cs.algs4.StdDraw;
  */
 public class GuitarHeroLite {
     public static final double CONCERT_A = 440.0;
-    public static final double CONCERT_C = CONCERT_A * Math.pow(2, 3.0 / 12.0);
 
     public static void main(String[] args) {
-        /* create two guitar strings, for concert A and C */
-        GuitarString stringA = new GuitarString(CONCERT_A);
-        GuitarString stringC = new GuitarString(CONCERT_C);
+        // 新建吉他弦数组
+        ArrayDeque<GuitarString> guitarStrings = new ArrayDeque<>();
+        String keyboard = "q2we4r5ty7u8i9op-[=zxdcfvgbnjmk,.;/' ";
 
+        // 创建每一根吉他弦
+        for (int i = 0; i < keyboard.length(); i++) {
+            double frequency = CONCERT_A * Math.pow(2, (i-24) / 12.0);
+            guitarStrings.addLast(new GuitarString(frequency));
+        }
         while (true) {
 
-            /* check if the user has typed a key; if so, process it */
+            // 检测键盘哪个按键被按下
             if (StdDraw.hasNextKeyTyped()) {
                 char key = StdDraw.nextKeyTyped();
-                if (key == 'a') {
-                    stringA.pluck();
-                } else if (key == 'c') {
-                    stringC.pluck();
+                if (keyboard.indexOf(key) != -1) {
+                    guitarStrings.get(keyboard.indexOf(key)).pluck();
                 }
             }
 
-            /* compute the superposition of samples */
-            double sample = stringA.sample() + stringC.sample();
+            // 创建sample
+            double sample = 0.0;
+            for (int i = 0; i < guitarStrings.size(); i++) {
+                sample += guitarStrings.get(i).sample();
+            }
 
             /* play the sample on standard audio */
             StdAudio.play(sample);
 
             /* advance the simulation of each guitar string by one step */
-            stringA.tic();
-            stringC.tic();
+            for (int i = 0; i < guitarStrings.size(); i++) {
+                guitarStrings.get(i).tic();
+            }
         }
     }
 }
