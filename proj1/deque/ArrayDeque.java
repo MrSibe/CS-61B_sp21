@@ -125,7 +125,6 @@ public class ArrayDeque<T> implements Deque<T> {
         return items[index(index+nextFirst+1)];
     }
 
-    @Override
     public Iterator<T> iterator() {
         return new ArrayDequeIterator();
     }
