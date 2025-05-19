@@ -6,7 +6,7 @@ import java.util.Iterator;
  * 采用循环双端数组实现
  * 这比双向数组实现起来舒服的多
  * */
-public class ArrayDeque<T> implements Deque<T> {
+public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private T[] items;
     private int size;
     private int nextFirst;
@@ -19,10 +19,10 @@ public class ArrayDeque<T> implements Deque<T> {
         nextLast = 4;
     }
 
-    public class ArrayDequeIterator implements Iterator<T> {
+    private class ArrayDequeIterator implements Iterator<T> {
         int currentIndex;
 
-        public ArrayDequeIterator() {
+        private ArrayDequeIterator() {
             currentIndex = index(nextFirst + 1);
         }
 
@@ -39,7 +39,7 @@ public class ArrayDeque<T> implements Deque<T> {
         }
     }
 
-    public int index(int i) {
+    private int index(int i) {
         if (i > items.length - 1) {
             return i % items.length;
         } else if (0 <= i) {
@@ -51,7 +51,7 @@ public class ArrayDeque<T> implements Deque<T> {
         }
     }
 
-    public void resize(int capacity) {
+    private void resize(int capacity) {
         T[] alter = (T[]) new Object[capacity];
         for (int i = nextFirst + 1, j = 0; i <= nextFirst + size; i++, j++) {
             alter[j] = items[index(i)];
