@@ -56,6 +56,7 @@ public class CapersRepository {
     public static void makeDog(String name, String breed, int age) {
         Dog dog = new Dog(name, breed, age);
         dog.saveDog();
+        System.out.println(dog);
     }
 
     /**
@@ -68,5 +69,6 @@ public class CapersRepository {
         File f = join(DOG_FOLDER, name);
         Dog dog = readObject(f, Dog.class);
         dog.haveBirthday();
+        writeObject(f, dog);
     }
 }

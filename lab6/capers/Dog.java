@@ -49,7 +49,7 @@ public class Dog implements Serializable {
      */
     public void haveBirthday() {
         age += 1;
-        System.out.println(toString());
+        System.out.println(this.toString());
         System.out.println("Happy birthday! Woof! Woof!");
     }
 
