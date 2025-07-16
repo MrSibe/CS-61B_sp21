@@ -32,37 +32,25 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
     @Override
     public void clear() {
-        throw new UnsupportedOperationException();
+        this.root = null;
+        this.size = 0;
     }
 
     @Override
     public boolean containsKey(K key) {
-        return getNode(root, key) != null; // 新增一个 getNode 方法
-    }
-
-    private BSTNode getNode(BSTNode node, K key) {
-        if (key == null) {
-            throw new IllegalArgumentException();
-        }
-        if (node == null) {
-            return null;
-        }
-        int cmp = key.compareTo(node.key);
-        if (cmp < 0) {
-            return getNode(node.leftChild, key);
-        } else if (cmp > 0) {
-            return getNode(node.rightChild, key);
-        } else {
-            return node;
-        }
+        return get(root, key) != null;
     }
 
     @Override
     public V get(K key) {
-        return get(root, key);
+        BSTNode b = get(root, key);
+        if (b == null) {
+            return null;
+        }
+        return b.value;
     }
 
-    private V get(BSTNode b, K key) {
+    private BSTNode get(BSTNode b, K key) {
         if (key == null) {
             throw new IllegalArgumentException("calls get() with a null key");
         }
@@ -75,7 +63,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         } else if (cmp > 0) {
             return get(b.leftChild, key);
         } else {
-            return b.value;
+            return b;
         }
     }
 
@@ -126,5 +114,23 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     @Override
     public Iterator<K> iterator() {
         throw new UnsupportedOperationException();
+    }
+
+    public void printInOrder() {
+        System.out.println("Print BSTMap in order:");
+        printInOrder(this.root);
+    }
+
+    public void printInOrder(BSTNode b) {
+        if (b == null) {
+            return;
+        }
+        if (b.leftChild != null) {
+            printInOrder(b.leftChild);
+        }
+        System.out.println(b.value);
+        if (b.rightChild != null) {
+            printInOrder(b.rightChild);
+        }
     }
 }
