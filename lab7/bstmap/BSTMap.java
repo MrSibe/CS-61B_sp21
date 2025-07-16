@@ -4,104 +4,108 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
-    private K key;
-    private V value;
-    private BSTMap<K, V> left;
-    private BSTMap<K, V> right;
+    private BSTNode root;
+    private int size;
 
-    public BSTMap(K key, V value) {
-        this.key = key;
-        this.value = value;
+    private class BSTNode {
+        private K key;
+        private V value;
+        private BSTNode leftChild;
+        private BSTNode rightChild;
+
+        public BSTNode() {
+            new BSTNode(null, null);
+        }
+
+        public BSTNode(K key, V value) {
+            this.key = key;
+            this.value = value;
+            this.leftChild = null;
+            this.rightChild = null;
+        }
     }
 
     public BSTMap() {
-        new BSTMap(null, null);
-    }
-
-    public void printInOrder() {
-        printInOrder(this);
-    }
-
-    public void printInOrder(BSTMap<K, V> b) {
-        if (b == null) {
-            return;
-        }
-        System.out.print(value + " ");
-        printInOrder(b.left);
-        printInOrder(b.right);
+        this.root = null;
+        this.size = 0;
     }
 
     @Override
     public void clear() {
-        this.left = null;
-        this.right = null;
-        this.key = null;
-        this.value = null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean containsKey(K key) {
-        return get(key) != null;
+        return getNode(root, key) != null; // 新增一个 getNode 方法
+    }
+
+    private BSTNode getNode(BSTNode node, K key) {
+        if (key == null) {
+            throw new IllegalArgumentException();
+        }
+        if (node == null) {
+            return null;
+        }
+        int cmp = key.compareTo(node.key);
+        if (cmp < 0) {
+            return getNode(node.leftChild, key);
+        } else if (cmp > 0) {
+            return getNode(node.rightChild, key);
+        } else {
+            return node;
+        }
     }
 
     @Override
     public V get(K key) {
-        return get(this, key);
+        return get(root, key);
     }
 
-    public V get(BSTMap<K, V> b, K key) {
+    private V get(BSTNode b, K key) {
         if (key == null) {
+            throw new IllegalArgumentException("calls get() with a null key");
+        }
+        if (b == null) {
             return null;
         }
-        int cmp = key.compareTo(this.key);
-        if (cmp > 0) {
-            get(b.right, key);
-        } else if (cmp == 0) {
-            return value;
+        int cmp = b.key.compareTo(key);
+        if (cmp < 0) {
+            return get(b.rightChild, key);
+        } else if (cmp > 0) {
+            return get(b.leftChild, key);
         } else {
-            get(b.left, key);
+            return b.value;
         }
-        return null;
     }
 
     @Override
     public int size() {
-        return size(this);
-    }
-
-    public int size(BSTMap<K, V> b) {
-        if (b == null) {
-            return 0;
-        }
-        return 1 + size(b.left) + size(b.right);
+        return this.size;
     }
 
     @Override
     public void put(K key, V value) {
-        if (key == null) {
-            return;
-        }
-        put(this, key, value);
+        root = put(this.root, key, value);
     }
 
-    public void put(BSTMap<K, V> b, K key, V value) {
+    private BSTNode put(BSTNode b, K key, V value) {
+        if (key == null) {
+            throw new IllegalArgumentException();
+        }
         if (b == null) {
-            new BSTMap<>(key, value);
+            size++;
+            return new BSTNode(key, value);
         }
-        int cmp = key.compareTo(this.key);
-        if (cmp > 0) {
-            if (b != null) {
-                put(b.right, key, value);
-            }
-        } else if (cmp < 0) {
-            if (b != null) {
-                put(b.left, key, value);
-            }
+        int cmp = b.key.compareTo(key);
+        if (cmp < 0) {
+            b.rightChild = put(b.rightChild, key, value);
+        } else if (cmp > 0) {
+            b.leftChild = put(b.leftChild, key, value);
         } else {
-            if (b != null) {
-                b.value = value;
-            }
+            b.value = value;
         }
+        return b;
     }
 
     @Override
